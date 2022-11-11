@@ -1,5 +1,7 @@
 <p>book-card works!</p>
 
-<h3 [style]="customStyle">Moby Dick</h3>
+<h3 [style]="customStyle">{{ content?.title }}</h3>
 
-<h4>Herman Melville</h4>
+<h4>{{ content?.author }}</h4>
+
+<button (click)="handleDetailClick($event)">Details</button>
