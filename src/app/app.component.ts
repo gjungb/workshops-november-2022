@@ -9,6 +9,8 @@ import { Book } from './model/book';
 export class AppComponent {
   title = 'workshops-november 2022';
 
+  visible = true;
+
   books: Book[] = [
     {
       title: 'How to win friends',
