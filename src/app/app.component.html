@@ -1,5 +1,9 @@
 <h1>Willkommen bei {{ title }}</h1>
 
-<button (click)="visible = !visible">Toggle</button>
+<router-outlet></router-outlet>
 
-<app-book-list *ngIf="visible"></app-book-list>
+<footer>
+    <p>
+        Willkommen
+    </p>
+</footer>
