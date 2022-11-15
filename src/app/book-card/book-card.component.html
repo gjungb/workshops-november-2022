@@ -1,7 +1,13 @@
 <p>book-card works!</p>
 
-<h3 [style]="customStyle">{{ content?.title }}</h3>
+<ng-container *ngIf="content">
+  <h3 [style]="customStyle">{{ content.title }}</h3>
 
-<h4>{{ content?.author }}</h4>
+  <h4>{{ content.author }}</h4>
 
-<button (click)="handleDetailClick($event)">Details</button>
+  <p>{{ content.isbn | appIsbn }}</p>
+
+  <button (click)="handleDetailClick($event)">Details</button>
+</ng-container>
+
+<pre><code>{{ content | json }}</code></pre>

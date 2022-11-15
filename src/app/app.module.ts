@@ -6,9 +6,11 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BookCardComponent } from './book-card/book-card.component';
 import { BookListComponent } from './book-list/book-list.component';
+import { AppIsbnPipe } from './shared/app-isbn.pipe';
+import { BookDetailComponent } from './book-detail/book-detail.component';
 
 @NgModule({
-  declarations: [AppComponent, BookCardComponent, BookListComponent],
+  declarations: [AppComponent, BookCardComponent, BookListComponent, AppIsbnPipe, BookDetailComponent],
   imports: [BrowserModule, AppRoutingModule, HttpClientModule],
   providers: [],
   bootstrap: [AppComponent],
