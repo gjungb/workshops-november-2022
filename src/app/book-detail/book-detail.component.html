@@ -1,1 +1,5 @@
 <p>book-detail works!</p>
+
+<ng-container *ngIf="book$ | async as book">
+    <app-book-card [content]="book" [debug]="true"></app-book-card>
+</ng-container>

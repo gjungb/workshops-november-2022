@@ -17,4 +17,14 @@ export class BookApiService {
       .get<Array<Book>>('http://localhost:4730/books')
       .pipe(delay(5000));
   }
+
+  /**
+   *
+   * @param isbn
+   * @returns
+   */
+  getBookByIsbn(isbn: string): Observable<Book> {
+    // @link {https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals}
+    return this.client.get<Book>('http://localhost:4730/books' + '/' + isbn);
+  }
 }

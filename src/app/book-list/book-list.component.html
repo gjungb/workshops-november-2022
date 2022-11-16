@@ -3,7 +3,7 @@
 <ng-container *ngIf="books$ | async as things; else loader">
   <ol>
     <li *ngFor="let book of things">
-      <a [routerLink]=" ['detail', book.isbn] ">Details</a>
+      <a [routerLink]="['detail', book.isbn]">Details</a>
       <app-book-card
         (detailClick)="goToBookDetails($event)"
         [content]="book"
@@ -15,3 +15,18 @@
 <ng-template #loader>
   <p>Wird geladen ...</p>
 </ng-template>
+
+<!--
+  <ng-container *ngIf="ui$ | async as ui">
+    <p>{{ ui.ticker }}</p>
+    <ol>
+      <li *ngFor="let book of ui.books">
+        <a [routerLink]="['detail', book.isbn]">Details</a>
+        <app-book-card
+        (detailClick)="goToBookDetails($event)"
+        [content]="book"
+        ></app-book-card>
+      </li>
+    </ol>
+  </ng-container>
+-->

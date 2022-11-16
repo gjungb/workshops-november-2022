@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subscription, take, takeUntil, tap, timer } from 'rxjs';
+import { Router } from '@angular/router';
+import { combineLatest, map, Observable, startWith, tap, timer } from 'rxjs';
 import { Book } from '../model/book';
 import { BookApiService } from '../shared/book-api.service';
 
@@ -16,21 +17,38 @@ export class BookListComponent implements OnInit, OnDestroy {
 
   books$?: Observable<Array<Book>>;
 
+  ui$?: Observable<{
+    books: Array<Book>;
+    ticker: number;
+  }>;
+
   // private subscription = Subscription.EMPTY;
 
   private readonly destroy$ = new EventEmitter<void>();
 
-  constructor(private readonly service: BookApiService) {}
+  constructor(
+    private readonly service: BookApiService,
+    private readonly router: Router
+  ) {}
 
   ngOnInit(): void {
-    const ticker$ = timer(2000, 3000);
+    const books$ = this.service.getAll().pipe(startWith([]));
 
-    ticker$
-      .pipe(
-        tap((value) => console.log(value)),
-        takeUntil(this.destroy$)
-      )
-      .subscribe();
+    const ticker$ = timer(2000, 3000).pipe(
+      startWith(0),
+      map((n) => n + 1)
+    );
+
+    this.ui$ = combineLatest([books$, ticker$]).pipe(
+      map(([books, ticker]) => ({ books, ticker }))
+    );
+
+    // ticker$
+    //   .pipe(
+    //     tap((value) => console.log(value)),
+    //     takeUntil(this.destroy$)
+    //   )
+    //   .subscribe();
 
     this.books$ = this.service.getAll().pipe(
       tap({
@@ -62,5 +80,6 @@ export class BookListComponent implements OnInit, OnDestroy {
   goToBookDetails(book: Book) {
     console.log('Navigate to book details, soon...');
     console.table(book);
+    this.router.navigate(['books', 'detail', book.isbn]);
   }
 }
