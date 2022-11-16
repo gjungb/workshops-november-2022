@@ -10,4 +10,4 @@
   <button (click)="handleDetailClick($event)">Details</button>
 </ng-container>
 
-<pre><code>{{ content | json }}</code></pre>
+<pre *ngIf="debug"><code>{{ content | json }}</code></pre>

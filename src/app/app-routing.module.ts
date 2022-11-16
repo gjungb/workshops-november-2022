@@ -11,11 +11,17 @@ const routes: Routes = [
   },
   {
     path: 'books',
-    component: BookListComponent,
-  },
-  {
-    path: 'books/detail/:isbn',
-    component: BookDetailComponent,
+    children: [
+      {
+        path: '',
+        component: BookListComponent,
+      },
+      {
+        path: 'detail/:isbn',
+        component: BookDetailComponent,
+        canActivate: [],
+      },
+    ],
   },
 ];
 
