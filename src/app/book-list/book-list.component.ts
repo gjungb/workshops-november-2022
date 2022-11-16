@@ -1,5 +1,6 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription, tap, timer } from 'rxjs';
+import { Component, EventEmitter, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { combineLatest, map, Observable, startWith, tap, timer } from 'rxjs';
 import { Book } from '../model/book';
 import { BookApiService } from '../shared/book-api.service';
 
@@ -12,37 +13,73 @@ import { BookApiService } from '../shared/book-api.service';
   styleUrls: ['./book-list.component.scss'],
 })
 export class BookListComponent implements OnInit, OnDestroy {
-  books!: Array<Book>;
+  // books!: Array<Book>;
 
-  private subscription = Subscription.EMPTY;
+  books$?: Observable<Array<Book>>;
 
-  constructor(private readonly service: BookApiService) {}
+  ui$?: Observable<{
+    books: Array<Book>;
+    ticker: number;
+  }>;
+
+  // private subscription = Subscription.EMPTY;
+
+  private readonly destroy$ = new EventEmitter<void>();
+
+  constructor(
+    private readonly service: BookApiService,
+    private readonly router: Router
+  ) {}
 
   ngOnInit(): void {
-    const ticker$ = timer(2000, 3000);
+    const books$ = this.service.getAll().pipe(startWith([]));
 
-    this.subscription = ticker$
-      .pipe(tap((value) => console.log(value)))
-      .subscribe();
+    const ticker$ = timer(2000, 3000).pipe(
+      startWith(0),
+      map((n) => n + 1)
+    );
 
-    this.service
-      .getAll()
-      .pipe(tap((value) => console.log(value)))
-      .subscribe({
-        next: (value) => {
-          this.books = value;
-        },
+    this.ui$ = combineLatest([books$, ticker$]).pipe(
+      map(([books, ticker]) => ({ books, ticker }))
+    );
+
+    // ticker$
+    //   .pipe(
+    //     tap((value) => console.log(value)),
+    //     takeUntil(this.destroy$)
+    //   )
+    //   .subscribe();
+
+    this.books$ = this.service.getAll().pipe(
+      tap({
+        next: (value) => console.log(value),
         complete: () => console.log('Habe fertig'), // effect
-      });
+      })
+    );
+
+    // this.service
+    //   .getAll()
+    //   .pipe(
+    //     tap((value) => console.log(value)),
+    //     take(1)
+    //   )
+    //   .subscribe({
+    //     next: (value) => {
+    //       this.books = value;
+    //     },
+    //     complete: () => console.log('Habe fertig'), // effect
+    //   });
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    this.destroy$.emit();
+    // this.subscription.unsubscribe();
   }
 
   // handling detailClick-Event
   goToBookDetails(book: Book) {
     console.log('Navigate to book details, soon...');
     console.table(book);
+    this.router.navigate(['books', 'detail', book.isbn]);
   }
 }

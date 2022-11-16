@@ -7,10 +7,26 @@ import { AppComponent } from './app.component';
 import { BASE_URL } from './app.di';
 import { BookCardComponent } from './book-card/book-card.component';
 import { BookListComponent } from './book-list/book-list.component';
+import { AppIsbnPipe } from './shared/app-isbn.pipe';
+import { BookDetailComponent } from './book-detail/book-detail.component';
+import { BookNewComponent } from './book-new/book-new.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [AppComponent, BookCardComponent, BookListComponent],
-  imports: [BrowserModule, AppRoutingModule, HttpClientModule],
+  declarations: [
+    AppComponent,
+    BookCardComponent,
+    BookListComponent,
+    AppIsbnPipe,
+    BookDetailComponent,
+    BookNewComponent,
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    ReactiveFormsModule,
+  ],
   providers: [
     {
       provide: BASE_URL,

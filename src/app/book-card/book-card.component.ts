@@ -23,6 +23,9 @@ export class BookCardComponent {
   @Input()
   content?: Book;
 
+  @Input()
+  debug = false;
+
   /**
    *
    */
