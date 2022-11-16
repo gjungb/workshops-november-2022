@@ -4,6 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { BASE_URL } from './app.di';
 import { BookCardComponent } from './book-card/book-card.component';
 import { BookListComponent } from './book-list/book-list.component';
 import { AppIsbnPipe } from './shared/app-isbn.pipe';
@@ -26,7 +27,12 @@ import { ReactiveFormsModule } from '@angular/forms';
     HttpClientModule,
     ReactiveFormsModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: BASE_URL,
+      useValue: 'http://localhost:4730',
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
