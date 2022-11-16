@@ -1,5 +1,6 @@
 <p>book-detail works!</p>
 
 <ng-container *ngIf="book$ | async as book">
+    <button (click)="debug()">Debug</button>
     <app-book-card [content]="book" [debug]="true"></app-book-card>
 </ng-container>
