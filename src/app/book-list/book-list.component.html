@@ -1,6 +1,7 @@
 <p>book-list works!</p>
 
 <ng-container *ngIf="books$ | async as things; else loader">
+  <button (click)="debugAll()">Debug all</button>
   <ol>
     <li *ngFor="let book of things">
       <a [routerLink]="['detail', book.isbn]">Details</a>
