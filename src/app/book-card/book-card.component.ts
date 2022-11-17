@@ -1,5 +1,6 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
@@ -23,6 +24,9 @@ export class BookCardComponent {
   @Input()
   content?: Book;
 
+  /**
+   * Soll das Buch zu Debugging-Zwecken als JSON dargestellt werden
+   */
   @Input()
   debug = false;
 
@@ -41,10 +45,25 @@ export class BookCardComponent {
 
   /**
    *
+   * @param cdr
+   */
+  constructor(private readonly cdr: ChangeDetectorRef) {}
+
+  /**
+   *
    */
   handleDetailClick(click: MouseEvent): void {
     // effect
     console.log('Clicked', click.clientX);
     this.detailClick.emit(this.content);
+  }
+
+  /**
+   *
+   */
+  toggleDebugMode(): void {
+    this.debug = !this.debug;
+    // Da wir ChangeDetectionStrategy.OnPush verwenden, muss hier Angular ausdrücklich aufgefordert werden, das UI zu aktualiseren :-(
+    this.cdr.markForCheck();
   }
 }

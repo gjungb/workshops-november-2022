@@ -1,6 +1,14 @@
-import { Component, EventEmitter, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  OnDestroy,
+  OnInit,
+  QueryList,
+  ViewChildren,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { combineLatest, map, Observable, startWith, tap, timer } from 'rxjs';
+import { BookCardComponent } from '../book-card/book-card.component';
 import { Book } from '../model/book';
 import { BookApiService } from '../shared/book-api.service';
 
@@ -26,11 +34,25 @@ export class BookListComponent implements OnInit, OnDestroy {
 
   private readonly destroy$ = new EventEmitter<void>();
 
+  /**
+   *
+   */
+  @ViewChildren(BookCardComponent)
+  cards?: QueryList<BookCardComponent>;
+
+  /**
+   *
+   * @param service
+   * @param router
+   */
   constructor(
     private readonly service: BookApiService,
     private readonly router: Router
   ) {}
 
+  /**
+   *
+   */
   ngOnInit(): void {
     const books$ = this.service.getAll().pipe(startWith([]));
 
@@ -39,6 +61,11 @@ export class BookListComponent implements OnInit, OnDestroy {
       map((n) => n + 1)
     );
 
+    /**
+     * @link {https://rxjs.dev/api/index/function/combineLatest}
+     * @link {https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment}
+     * @link {https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Object_initializer}
+     */
     this.ui$ = combineLatest([books$, ticker$]).pipe(
       map(([books, ticker]) => ({ books, ticker }))
     );
@@ -71,15 +98,29 @@ export class BookListComponent implements OnInit, OnDestroy {
     //   });
   }
 
+  /**
+   *
+   */
   ngOnDestroy(): void {
     this.destroy$.emit();
     // this.subscription.unsubscribe();
   }
 
-  // handling detailClick-Event
+  /**
+   * Handle detailClick-Event
+   * @param book
+   */
   goToBookDetails(book: Book) {
     console.log('Navigate to book details, soon...');
     console.table(book);
     this.router.navigate(['books', 'detail', book.isbn]);
+  }
+
+  /**
+   *
+   */
+  debugAll(): void {
+    // effect
+    this.cards?.forEach((card) => card.toggleDebugMode());
   }
 }
