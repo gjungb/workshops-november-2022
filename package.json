@@ -39,7 +39,7 @@
     "@typescript-eslint/parser": "5.43.0",
     "bookmonkey-api": "^3.1.2",
     "eslint": "^8.23.1",
-    "jasmine-core": "~4.5.0",
+    "jasmine-core": "~4.6.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.1.0",
     "karma-coverage": "~2.2.0",
